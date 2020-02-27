@@ -1,6 +1,6 @@
 ---
 title: "Practice Exam"
-author: "Karl Rohe"
+author: "Jillian Schat"
 date: "2/27/2020"
 output: md_document
 ---
@@ -24,7 +24,16 @@ library(nycflights13)
 Make a plot with three facets, one for each airport in the weather data.  The x-axis should be the day of the year (1:365) and the y-axis should be the mean temperature recorded on that day, at that airport.
 ```{r}
 library(lubridate)
-weather %>% mutate(day_of_year = yday(time_hour))
+weather %>% mutate(day_of_year = yday(time_hour)) %>%
+  group_by(origin, day_of_year) %>%
+  summarise(mean_temp = mean(temp, na.rm = TRUE))
+  
+EWR <- filter(weather, origin == "EWR")
+  # look into ggplot notes
+  ggplot(data = EWR, mapping = aes(x = day_of_year, y = mean_temp)) +
+  geom_point(aes(size = count), alpha = 1/3) + 
+  geom_smooth(se = F)
+
 ```
 
 
@@ -39,7 +48,7 @@ For each (airport, day) contruct a tidy data set of the airport's "performance" 
 ```{r}
 ```
 
-Construct a tidy data set to that give weather summaries for each (airport, day).  Use the total precipitation, minimum visibility, maximum wind_gust, and average wind_speed.  
+Construct a tidy data set to that give weather summaries for each (airport, day).  Use the total precipitation, minimum visibility, and average wind_speed.  
 ```{r}
 ```
 
